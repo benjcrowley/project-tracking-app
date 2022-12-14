@@ -1,0 +1,9 @@
+Databases with Flask
+Student understands setting up SQLAlchemy classes.
+Student can use Flask Migrate.
+Student can define a one-to-many and one-to-one relationship with the db.relationship(), along with the db.ForeignKey class.
+Student can use the .all_all() function to send a list of class objects to be inserted into a database.
+Attached SQLAlchemy functionality to Flask view functions so user input updates database.
+
+Project Overview:
+Build a Project Tracking Web App, which will be partnerd with Postgres database. We will gather user input using Flask-WTForms to allow users to add tasks to the database

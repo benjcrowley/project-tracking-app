@@ -1,0 +1,6 @@
+config.sh
+
+.DS_Store
+
+venv/
+
