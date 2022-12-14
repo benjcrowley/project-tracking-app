@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Tracking App</title>
+</head>
+<body>
+    #create a form tag with method="POST" and action= url for add_team
+    <form action="{{ url_for('add_team') }}" method="POST">
+        {{ team_form.csrf_token }}
+        {{ team_form.team_name.label }} {{ team_form.team_name }}
+        {{ team_form.submit() }}
+    </form>
+    <br>
+    <form action="{{ url_for('add_project') }}" method="POST">
+        {{ project_form.csrf_token }}
+        {{ project_form.project_name.label }} {{ project_form.project_name }}
+        {{ project_form.description.label }} {{ project_form.description }}
+        {{ project_form.completed.label }} {{ project_form.completed }}
+        {{ project_form.team_id.label }} {{ project_form.team_id }}
+        {{ project_form.submit() }}
+    </form>
+</body>
+</html>

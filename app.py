@@ -11,7 +11,7 @@ app.config["SECRET_KEY"] = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/postgres"
 #1. add boiler plate code
 # 2. need a user class with an id variable
-# user loader -> function that takes in a user id and gives back the user object, or none if the user doesn't exist
+# 3. user loader -> function that takes in a user id and gives back the user object, or none if the user doesn't exist
 # 4. call the login_user function on the user object
 # 5. if you want to restrict access to a route, use the @login_required decorator
 
