@@ -1,0 +1,28 @@
+/* format the team-form form to have a solid boarder, and in a colum in the top left of the page underneath the nav bar */
+/* space out the 2 form items to fill in the div */
+/* mimic the font of facebook's login page */
+#team-form {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+    top: 20px;
+    width: fit-content;
+    background-color: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* center the form with id login-form */
+/* add 8 px inbetween form and submit button */
+#login-form {
+    position: relative;
+    top: 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}

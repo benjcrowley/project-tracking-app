@@ -4,17 +4,84 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <!-- connect the style.css file in the static folder to the project -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
     <title>Project Tracking App</title>
 </head>
 <body>
-    #create a form tag with method="POST" and action= url for add_team
-    <form action="{{ url_for('add_team') }}" method="POST">
+    
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Projects</a>
+            {% if 'username' in session %}
+            <a class="navbar-brand" href="/logout">Logout</a>
+            {% else %}
+            <a class="navbar-brand" href="/login">Login</a>
+            {% endif %}
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav">
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- This is where the main content goes. -->
+    <!-- Create a flash function that will display a dismissing flash alert -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    {% block body %}
+    <h1>Project Tracking App</h1>
+
+    <!-- display username from session after userid is input -->
+<!-- get user id from db using the session username -->
+    
+    <h2>Welcome {{ session['username'] }} [user id: {{ session['user_id']}}]</h2>
+    
+
+    <!-- a table that displays the team name and the number of projects they have -->
+    <h3>Teams</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Number of Projects</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.project_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    
+    <!-- #create a form tag with method="POST" and action= url for add_team that takes in team_form.team_name and team_form.user_id -->
+    <form id="team-form" action="{{ url_for('add_team') }}" method="POST">
+        <h3>Add New Team</h3>
         {{ team_form.csrf_token }}
         {{ team_form.team_name.label }} {{ team_form.team_name }}
         {{ team_form.submit() }}
     </form>
     <br>
-    <form action="{{ url_for('add_project') }}" method="POST">
+    <form id="project-form" action="{{ url_for('add_project') }}" method="POST">
         {{ project_form.csrf_token }}
         {{ project_form.project_name.label }} {{ project_form.project_name }}
         {{ project_form.description.label }} {{ project_form.description }}
@@ -22,5 +89,6 @@
         {{ project_form.team_id.label }} {{ project_form.team_id }}
         {{ project_form.submit() }}
     </form>
+    {% endblock %}
 </body>
 </html>

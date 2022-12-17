@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <!-- connect the style.css file in the static folder to the project -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <title>Project Tracking App</title>
+</head>
+<body>
+    
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Projects</a>
+            {% if 'username' in session %}
+            <a class="navbar-brand" href="/logout">Logout</a>
+            {% else %}
+            <a class="navbar-brand" href="/login">Login</a>
+            {% endif %}
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav">
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- This is where the main content goes. -->
+    <!-- Create a flash function that will display a dismissing flash alert -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<body>
+    <!-- A well designed and formatted log in page that asks users to log in or click a link to a create user page -->
+    <form id="login-form" action="{{ url_for('login') }}" method="POST">
+        <h1>Login</h1>
+        {{ user_form.csrf_token }}
+        {{ user_form.username.label }} {{ user_form.username }}
+        {{ user_form.password.label }} {{ user_form.password }}
+        {{ user_form.submit() }}
+        <br>
+        <h3>Not a user?</h3>
+        <a href="{{ url_for('add_user') }}">Create User</a>
+</body>
+</html>
