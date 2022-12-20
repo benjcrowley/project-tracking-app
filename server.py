@@ -91,26 +91,27 @@ def add_team():
 @app.route("/add-project/", methods=["POST"])
 def add_project():
     project_form = ProjectForm()
+    team_id = session.get("team_id")
     if project_form.validate_on_submit():
         project_name = project_form.project_name.data
         description = project_form.description.data
         completed = project_form.completed.data
-        team_id = session.get("team_id")
         new_project = Project(project_name, completed, team_id, description=description)
         db.session.add(new_project)
         db.session.commit()
-        return redirect(url_for("home"))
+        return redirect(url_for("team_page", team_id=team_id))
     else:
         print("Form is not valid")
-        return redirect(url_for("home"))
+        return redirect(url_for("team_page", team_id=team_id))
 
 # add a route to delete a project from a team
 @app.route("/delete-project/<int:project_id>")
 def delete_project(project_id):
+    team_id = session.get("team_id")
     project = Project.query.get(project_id)
     db.session.delete(project)
     db.session.commit()
-    return redirect(url_for("home"))
+    return redirect(url_for("team_page", team_id=team_id))
 
 # add a route to view a team page that displays all the projects for a team
 @app.route("/team/<int:team_id>")
