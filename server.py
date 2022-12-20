@@ -104,6 +104,14 @@ def add_project():
         print("Form is not valid")
         return redirect(url_for("home"))
 
+# add a route to delete a project from a team
+@app.route("/delete-project/<int:project_id>")
+def delete_project(project_id):
+    project = Project.query.get(project_id)
+    db.session.delete(project)
+    db.session.commit()
+    return redirect(url_for("home"))
+
 # add a route to view a team page that displays all the projects for a team
 @app.route("/team/<int:team_id>")
 def team_page(team_id):
@@ -117,6 +125,21 @@ def team_page(team_id):
     # get the count of projects for the team
     project_count = Project.query.filter_by(team_id=team_id).count()
     return render_template("team-page.html", team=team, projects=projects, project_count=project_count, project_form=project_form)
+
+# add a route to delete a team
+@app.route("/delete-team/<int:team_id>")
+def delete_team(team_id):
+    team = Team.query.get(team_id)
+    # check to see if the team has any projects
+    projects = Project.query.filter_by(team_id=team_id).all()
+    if projects:
+        flash("You cannot delete a team with projects")
+        return redirect(url_for("home"))
+    else:
+        db.session.delete(team)
+        db.session.commit()
+    return redirect(url_for("home"))
+
 
 if __name__ == "__main__":
     connect_to_db(app)

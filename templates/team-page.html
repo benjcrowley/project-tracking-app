@@ -46,13 +46,14 @@
     <!-- display a table with all the projects a team has from the project list -->
     {% if projects %}
     <div class="container">
-        <h1>Projects</h1>
+        <h1>{{ team.team_name }}</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Project Name</th>
                     <th scope="col">Project Description</th>
                     <th scope="col">Project Status</th>
+                    <th scope="col">Delete Project</th>
 
                 </tr>
             </thead>
@@ -63,6 +64,7 @@
                     <td>{{ project.description }}</td>
                     <!-- if project_form.completed is true display "done" else display "in progress" -->
                     <td>{% if project.completed %}Done{% else %}In Progress{% endif %}</td>
+                    <td><a href="{{ url_for('delete_project', project_id=project.id) }}" class="btn btn-danger">Delete</a></td>
                     
 
                 </tr>
@@ -74,9 +76,7 @@
     <h1>Add a Project</h1>
     <form id="project-form" action="{{ url_for('add_project')  }}" method="POST">
         {{ project_form.csrf_token }}
-
-        <label for="project_name"> {{ project_form.project_name.label }}  </label> <input {{ project_form.project_name }}>
-        
+        {{ project_form.project_name.label }}    {{ project_form.project_name }}
         {{ project_form.description.label }}    {{ project_form.description }}
         {{ project_form.completed.label }}    {{ project_form.completed }}
 
