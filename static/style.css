@@ -26,3 +26,18 @@
     align-items: center;
     margin: auto;
 }
+
+/* the project form should be similar to the table with space in-between each box */
+#project-form {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+    top: 20px;
+    width: fit-content;
+    background-color: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: row;
+}

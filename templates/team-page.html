@@ -43,47 +43,43 @@
         {% endif %}
     {% endwith %}
 
+    <!-- display a table with all the projects a team has from the project list -->
+    {% if projects %}
+    <div class="container">
+        <h1>Projects</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Project Name</th>
+                    <th scope="col">Project Description</th>
+                    <th scope="col">Project Status</th>
 
-    {% block body %}
-    <h1>Project Tracking App</h1>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{ project.project_name }}</td>
+                    <td>{{ project.description }}</td>
+                    <!-- if project_form.completed is true display "done" else display "in progress" -->
+                    <td>{% if project.completed %}Done{% else %}In Progress{% endif %}</td>
+                    
 
-    <!-- display username from session after userid is input -->
-<!-- get user id from db using the session username -->
-    
-    <h2>Welcome {{ session['username'] }} [user id: {{ session['user_id']}}]</h2>
-    
-
-    <!-- a table that displays the team name and the number of projects they have -->
-    <h3>Teams</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Team Name</th>
-                <th>Number of Projects</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for team in teams %}
-            <tr>
-                <td>{{ team.team_name }}</td>
-                <td>{{ team.project_count }}</td>
-                <td><a href="{{ url_for('team_page', team_id=team.id) }}">View Team</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-
-
-    
-    <!-- #create a form tag with method="POST" and action= url for add_team that takes in team_form.team_name and team_form.user_id -->
-    <form id="team-form" action="{{ url_for('add_team') }}" method="POST">
-        <h3>Add New Team</h3>
-        {{ team_form.csrf_token }}
-        {{ team_form.team_name.label }} {{ team_form.team_name }}
-        {{ team_form.submit() }}
-    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
     <br>
+    <h1>Add a Project</h1>
+    <form id="project-form" action="{{ url_for('add_project')  }}" method="POST">
+        {{ project_form.csrf_token }}
 
-    {% endblock %}
+        <label for="project_name"> {{ project_form.project_name.label }}  </label> <input {{ project_form.project_name }}>
+        
+        {{ project_form.description.label }}    {{ project_form.description }}
+        {{ project_form.completed.label }}    {{ project_form.completed }}
+
+        {{ project_form.submit() }}
+    </form>
 </body>
-</html>

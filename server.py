@@ -59,7 +59,6 @@ def home():
     if not session.get("username"):
         return redirect(url_for("login"))
     team_form = TeamForm()
-    project_form = ProjectForm()
     # get the user id from the session
     user_id = session.get("user_id")
     # get all the teams for the user
@@ -69,7 +68,7 @@ def home():
         team.project_count = Project.query.filter_by(team_id=team.id).count()
     
 
-    return render_template("home.html", team_form=team_form, project_form=project_form, teams=teams)
+    return render_template("home.html", team_form=team_form, teams=teams)
 
 
 # add a route to add teams that have a foreign key to the user
@@ -88,15 +87,15 @@ def add_team():
         return redirect(url_for("home"))
 
 
-# add a route to add projects that have a foreign key to the team
-@app.route("/add-project", methods=["POST"])
+# add a route to add projects
+@app.route("/add-project/", methods=["POST"])
 def add_project():
     project_form = ProjectForm()
     if project_form.validate_on_submit():
         project_name = project_form.project_name.data
         description = project_form.description.data
         completed = project_form.completed.data
-        team_id = project_form.team_id.data
+        team_id = session.get("team_id")
         new_project = Project(project_name, completed, team_id, description=description)
         db.session.add(new_project)
         db.session.commit()
@@ -105,7 +104,21 @@ def add_project():
         print("Form is not valid")
         return redirect(url_for("home"))
 
+# add a route to view a team page that displays all the projects for a team
+@app.route("/team/<int:team_id>")
+def team_page(team_id):
+    project_form = ProjectForm()
+    # save the team id in the session
+    session["team_id"] = team_id
+    # get the team
+    team = Team.query.get(team_id)
+    # get the projects for the team
+    projects = Project.query.filter_by(team_id=team_id).all()
+    # get the count of projects for the team
+    project_count = Project.query.filter_by(team_id=team_id).count()
+    return render_template("team-page.html", team=team, projects=projects, project_count=project_count, project_form=project_form)
 
 if __name__ == "__main__":
     connect_to_db(app)
+    print("Connected to DB.")
     app.run(debug=True, port=8000)
